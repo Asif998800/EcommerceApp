@@ -11,6 +11,7 @@ class CartPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            //AppBar
             Container(
               height: 70,
               margin: EdgeInsets.symmetric(horizontal: 25),
@@ -18,13 +19,16 @@ class CartPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(Icons.arrow_back),
-                  Icon(Icons.shopping_cart_outlined),
+                  Text('C A R T',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+                  Visibility(
+                      child: Icon(Icons.shopping_cart_outlined),
+                    visible: false,
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 10),
-            Text('CART',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            SizedBox(height: 35),
+            SizedBox(height: 25),
             Expanded(
               child: Container(
                 height: 130,
@@ -59,6 +63,7 @@ class CartPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 margin: EdgeInsets.only(left: 10,right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
