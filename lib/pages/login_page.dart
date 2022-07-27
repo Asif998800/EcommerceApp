@@ -1,14 +1,46 @@
+import 'package:ecommerce/pages/sign_up.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+import 'home_page.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _LoginPageState extends State<LoginPage> {
 
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  signIn()async{
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      );
+      var authCredential = userCredential.user;
+      if (authCredential!.uid.isNotEmpty){
+        Navigator.push(context, CupertinoPageRoute(builder: (_)=>HomePage()));
+      }
+      else{
+        Fluttertoast.showToast(msg: "Something is wrong");
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(msg: "No user found for that email.");
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(msg: "Wrong password provided for that user.");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +84,7 @@ class _SignInPageState extends State<SignInPage> {
                       SizedBox(height: 25),
                       //Form
                       TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.red),
@@ -59,6 +92,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),),
                       SizedBox(height: 5),
                       TextField(
+                        controller: _passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                         hintText: 'Password',
@@ -73,7 +107,9 @@ class _SignInPageState extends State<SignInPage> {
                           primary: Colors.red, // background
                           onPrimary: Colors.white, // foreground
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          signIn();
+                        },
                         child: Text('SIGN IN',style: TextStyle(fontSize: 18),),
                       ),
                       SizedBox(height: 50),
@@ -82,7 +118,12 @@ class _SignInPageState extends State<SignInPage> {
                         children: [
                           Text('Dont have an account?'),
                           SizedBox(width: 5),
-                          Text('Sign Up',style: TextStyle(color: Colors.red),),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(context, CupertinoPageRoute(builder: (_)=>SignUpPage()));
+                            },
+                            child: const Text('Sign Up',style: TextStyle(color: Colors.red),),
+                          ),
                         ],
                       )
                     ],

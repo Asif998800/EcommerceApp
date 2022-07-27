@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../nav_page.dart';
@@ -33,8 +34,12 @@ class _UserFormState extends State<UserForm> {
   }
   
   sendUserDataToDB()async {
+
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+
     CollectionReference _collectionRef = FirebaseFirestore.instance.collection('user-form-data');
-    return _collectionRef.doc().set({
+    return _collectionRef.doc(currentUser!.email).set({
       "name":_nameController.text,
       "phone":_phoneController.text,
       "dob":_dobController.text,

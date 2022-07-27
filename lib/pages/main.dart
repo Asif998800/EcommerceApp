@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'cart_page.dart';
 import 'home_page.dart';
 import '../nav_page.dart';
-import 'sign_in_page.dart';
+import 'login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
