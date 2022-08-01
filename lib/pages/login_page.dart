@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../bottom_nav_controller.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       var authCredential = userCredential.user;
       if (authCredential!.uid.isNotEmpty){
-        Navigator.push(context, CupertinoPageRoute(builder: (_)=>HomePage()));
+        Navigator.push(context, CupertinoPageRoute(builder: (_)=>BottomNavController()));
       }
       else{
         Fluttertoast.showToast(msg: "Something is wrong");

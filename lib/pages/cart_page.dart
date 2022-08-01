@@ -18,7 +18,7 @@ class CartPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.arrow_back),
+                  IconButton(onPressed: ()=>Navigator.pop(context), icon: Icon(Icons.arrow_back),),
                   Text('C A R T',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                   Visibility(
                       child: Icon(Icons.shopping_cart_outlined),

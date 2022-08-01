@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/top_product_card.dart';
@@ -6,7 +7,7 @@ import 'cart_page.dart';
 import 'favorite_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -56,13 +57,36 @@ class _HomePageState extends State<HomePage> {
     'https://images.unsplash.com/photo-1470093851219-69951fcbb533?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
   ];
 
+  List<String> _carouselImages = [];
+  var _dotPosition = 0;
+
+  fetchCarouselImages() async {
+    var _firestoreInstance = FirebaseFirestore.instance;
+    QuerySnapshot qn =
+    await _firestoreInstance.collection("carousel-slider").get();
+    setState(() {
+      for (int i = 0; i < qn.docs.length; i++) {
+        _carouselImages.add(
+          qn.docs[i]["img-path"],
+        );
+        print(qn.docs[i]["img-path"]);
+      }
+    });
+
+    return qn.docs;
+  }
+
+  @override
+  void initState() {
+    fetchCarouselImages();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.green.shade50,
           margin: EdgeInsets.only(left: 10),
           child: Column(
             children: [
@@ -98,27 +122,37 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              //Carousel Slider
+
+              //App Banner
               Container(
                 child: Column(
                   children: [
                     Padding(padding: EdgeInsets.all(10)),
-                    CarouselSlider(
-                        items: imgList.map(
-                          (item) => Container(
-                            child: Center(
-                              child: Image.network(
-                                item,
-                                fit: BoxFit.cover,
-                                width: 1000,
-                              ),
+                    AspectRatio(
+                      aspectRatio: 2.4,
+                      child: CarouselSlider(
+                          items: _carouselImages
+                              .map((item) => Padding(
+                            padding: const EdgeInsets.only(left: 3, right: 3),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(item),
+                                      fit: BoxFit.fitWidth)),
                             ),
-                          )).toList(),
-                        options: CarouselOptions(
-                          autoPlay: true,
-                          aspectRatio: 2.0,
-                          enlargeCenterPage: true,
-                        ),),
+                          ))
+                              .toList(),
+                          options: CarouselOptions(
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              viewportFraction: 0.8,
+                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              onPageChanged: (val, carouselPageChangedReason) {
+                                setState(() {
+                                  _dotPosition = val;
+                                });
+                              })),
+                    ),
                   ],
                 ),
               ),   //CarouselSlider
@@ -148,16 +182,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10.0),
                 height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ProductCard(title: 'Iphone 12',price: '299',),
-                    ProductCard(title: 'Motorola',price: '189'),
-                    ProductCard(title: 'Samsung pro',price: '399'),
-                    ProductCard(title: 'Micromax',price: '99'),
-                    ProductCard(title: 'Gioney',price: '89'),
-                  ],
-                ),
+                child: ProductCard(),
               ),
               SizedBox(height: 15),
               Row(

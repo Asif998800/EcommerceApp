@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'pages/cart_page.dart';
 import 'pages/favorite_page.dart';
 
-class NavPage extends StatefulWidget {
-  const NavPage({Key? key}) : super(key: key);
+class BottomNavController extends StatefulWidget {
+  const BottomNavController({Key? key}) : super(key: key);
 
   @override
-  State<NavPage> createState() => _NavPageState();
+  State<BottomNavController> createState() => _BottomNavControllerState();
 }
 
-class _NavPageState extends State<NavPage> {
+class _BottomNavControllerState extends State<BottomNavController> {
 
   List pages = [
     HomePage(),
@@ -34,6 +34,13 @@ class _NavPageState extends State<NavPage> {
     return Scaffold(
       body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 10,
+        selectedItemColor: Colors.red,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.white,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        selectedLabelStyle: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
         currentIndex: _selectedIndex,
         onTap: _navigateNavBar,
         type: BottomNavigationBarType.fixed,

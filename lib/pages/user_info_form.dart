@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../nav_page.dart';
+import '../bottom_nav_controller.dart';
 
 class UserForm extends StatefulWidget {
   const UserForm({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _UserFormState extends State<UserForm> {
       "dob":_dobController.text,
       "gender":_genderController.text,
       "age":_ageController.text,
-    }).then((value) => Navigator.push(context, MaterialPageRoute(builder: (_)=>NavPage()))).catchError((error)=>print("Somethimg is wrong. $error"));
+    }).then((value) => Navigator.push(context, MaterialPageRoute(builder: (_)=>BottomNavController()))).catchError((error)=>print("Somethimg is wrong. $error"));
   }
 
   @override

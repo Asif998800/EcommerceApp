@@ -3,6 +3,7 @@ import 'package:ecommerce/utils/shop_cart_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/product_image_slider.dart';
+import 'cart_page.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({Key? key}) : super(key: key);
@@ -31,29 +32,31 @@ class _ProductDetailsState extends State<ProductDetails> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        height: 60,
-                        width: 60,
+                        height: 50,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: Colors.red.shade400,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                          size: 35,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                            size: 30,
+                          ), onPressed: () => Navigator.pop(context),
                         ),
                       ),
                       Container(
-                        height: 60,
-                        width: 60,
+                        height: 50,
+                        width: 50,
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(25),
                         ),
                         child: Icon(
                           Icons.favorite_border,
                           color: Colors.white,
-                          size: 35,
+                          size: 30,
                         ),
                       ),
                     ],
@@ -94,7 +97,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                      primary: Colors.red,
                      minimumSize: Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height
                    ),
-                   onPressed: () {},
+                   onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>CartPage())),
                    child: Text('ADD TO CART'),
                  ),
                ),
